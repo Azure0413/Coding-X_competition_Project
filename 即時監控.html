@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="video_style.css">
+    <title>即時監控</title>
+</head>
+<SCRIPT LANGUAGE="JavaScript">
+	function reP(){
+	document.getElementById('oImg').style.display = "block";
+	}
+</script>
+<script language="JavaScript">
+    var subjectObject = {
+        "光復地停":{
+        "前半區": ["A1","A2","B1","B2","C1","C2","D1","D2","E1","E2","F1","F2"],
+        "後半區": ["G1","G2","H1","H2","I1","I2","J1","J2","L1","L2"] 
+      },
+      "成功地停": {
+        "右半區": ["A1","A2","B1","B2","C1","C2","D1","D2","E1","E2"],
+        "左半區": ["F1","F2","G1","G2","H1","H2"]
+      },
+      "管院地停": {
+        "平面": ["A1","A2","B1","B2","C1","C2","D1","D2"],
+        "地下": ["A","B","C","D","E"]
+      },
+      "雲平地停": {
+        "平面": ["A","B","C","D","E"],
+        "地下": ["A1","A2","B1","B2","C1","C2"]
+      }
+    }
+    window.onload = function() {
+      var subjectSel = document.getElementById("subject");
+      var topicSel = document.getElementById("topic");
+      var chapterSel = document.getElementById("chapter");
+      for (var x in subjectObject) {
+        subjectSel.options[subjectSel.options.length] = new Option(x, x);
+      }
+      subjectSel.onchange = function() {
+    //empty Chapters- and Topics- dropdowns
+    chapterSel.length = 1;
+    topicSel.length = 1;
+        //display correct values
+        for (var y in subjectObject[this.value]) {
+          topicSel.options[topicSel.options.length] = new Option(y, y);
+        }
+      }
+      topicSel.onchange = function() {
+     //empty Chapters dropdown
+    chapterSel.length = 1;
+        //display correct values
+        var z = subjectObject[subjectSel.value][this.value];
+        for (var i = 0; i < z.length; i++) {
+          chapterSel.options[chapterSel.options.length] = new Option(z[i], z[i]);
+        }
+      }
+    } 
+    function ShowTime(){
+    document.getElementById('showbox').innerHTML = new Date();
+    setTimeout('ShowTime()',1000);
+  }
+    </script>
+  <body onload="ShowTime()">
+    <div id="showbox"></div>
+    <a href="index.html">
+        <img src="上一頁.png" alt="上一頁" style="height:50px; position: relative; top:20px; left:50px;"/>
+      </a>
+    <div style="position: relative; left:500px;top:60px;font-style:monospace">
+      <form name="form1" id="form1" action="/action_page.php">
+        地停名稱: <select name="subject" id="subject">
+            <option value="" selected="selected">請選擇地停</option>
+          </select>
+        區域名稱: <select name="topic" id="topic">
+            <option value="" selected="selected">請先選擇地停</option>
+          </select>
+        區域部分: <select name="chapter" id="chapter">
+            <option value="" selected="selected">請先遠則區域</option>
+          </select>
+              <input type="button" value="確定" onclick="reP()">
+        </form>
+    </div>
+   <img src="車.png" id="oImg" style="display:none;position: relative;left:400px;top:67px;"/>
+</body>
+<style>
+  body::-webkit-scrollbar {
+  display: none;
+}
+</style>
+  <script>
+    var subjectObject = {
+        "光復地停":{
+        "前半區": ["A1","A2","B1","B2","C1","C2","D1","D2","E1","E2","F1","F2"],
+        "後半區": ["G1","G2","H1","H2","I1","I2","J1","J2","L1","L2"] 
+      },
+      "成功地停": {
+        "右半區": ["A1","A2","B1","B2","C1","C2","D1","D2","E1","E2"],
+        "左半區": ["F1","F2","G1","G2","H1","H2"]
+      },
+      "管院地停": {
+        "平面": ["A1","A2","B1","B2","C1","C2","D1","D2"],
+        "地下": ["A","B","C","D","E"]
+      },
+      "雲平地停": {
+        "平面": ["A","B","C","D","E"],
+        "地下": ["A1","A2","B1","B2","C1","C2"]
+      }
+    }
+    window.onload = function() {
+      var subjectSel = document.getElementById("subject");
+      var topicSel = document.getElementById("topic");
+      var chapterSel = document.getElementById("chapter");
+      for (var x in subjectObject) {
+        subjectSel.options[subjectSel.options.length] = new Option(x, x);
+      }
+      subjectSel.onchange = function() {
+    //empty Chapters- and Topics- dropdowns
+    chapterSel.length = 1;
+    topicSel.length = 1;
+        //display correct values
+        for (var y in subjectObject[this.value]) {
+          topicSel.options[topicSel.options.length] = new Option(y, y);
+        }
+      }
+      topicSel.onchange = function() {
+     //empty Chapters dropdown
+    chapterSel.length = 1;
+        //display correct values
+        var z = subjectObject[subjectSel.value][this.value];
+        for (var i = 0; i < z.length; i++) {
+          chapterSel.options[chapterSel.options.length] = new Option(z[i], z[i]);
+        }
+      }
+    }
+   
+    </script> 
+    
+</html>

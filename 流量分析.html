@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流量分析</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="flow_style.css">
+    <script src='https://www.gstatic.com/charts/loader.js'></script>
+    <script>
+       google.charts.load('upcoming', {'packages': ['vegachart']}).then(drawChart);
+ 
+       function drawChart() {
+         const dataTable = new google.visualization.DataTable();
+         dataTable.addColumn({type: 'string', 'id': 'category'});
+         dataTable.addColumn({type: 'number', 'id': 'amount'});
+         dataTable.addRows([
+          ['清晨',   0.15],
+          ['早上',      0.2],
+          ['中午',  0.4],
+          ['晚上', 0.1],
+          ['半夜',    0.15]
+         ]);
+ 
+         const options = {
+           "vega": {
+             "$schema": "https://vega.github.io/schema/vega/v4.json",
+             "width": 500,
+             "height": 200,
+             "padding": 5,
+ 
+             'data': [{'name': 'table', 'source': 'datatable'}],
+ 
+             "signals": [
+               {
+                 "name": "tooltip",
+                 "value": {},
+                 "on": [
+                   {"events": "rect:mouseover", "update": "datum"},
+                   {"events": "rect:mouseout",  "update": "{}"}
+                 ]
+               }
+             ],
+ 
+             "scales": [
+               {
+                 "name": "xscale",
+                 "type": "band",
+                 "domain": {"data": "table", "field": "category"},
+                 "range": "width",
+                 "padding": 0.05,
+                 "round": true
+               },
+               {
+                 "name": "yscale",
+                 "domain": {"data": "table", "field": "amount"},
+                 "nice": true,
+                 "range": "height"
+               }
+             ],
+ 
+             "axes": [
+               { "orient": "bottom", "scale": "xscale" },
+               { "orient": "left", "scale": "yscale" }
+             ],
+ 
+             "marks": [
+               {
+                 "type": "rect",
+                 "from": {"data":"table"},
+                 "encode": {
+                   "enter": {
+                     "x": {"scale": "xscale", "field": "category"},
+                     "width": {"scale": "xscale", "band": 1},
+                     "y": {"scale": "yscale", "field": "amount"},
+                     "y2": {"scale": "yscale", "value": 0}
+                   },
+                   "update": {
+                     "fill": {"value": "steelblue"}
+                   },
+                   "hover": {
+                     "fill": {"value": "red"}
+                   }
+                 }
+               },
+               {
+                 "type": "text",
+                 "encode": {
+                   "enter": {
+                     "align": {"value": "center"},
+                     "baseline": {"value": "bottom"},
+                     "fill": {"value": "#333"}
+                   },
+                   "update": {
+                     "x": {"scale": "xscale", "signal": "tooltip.category", "band": 0.5},
+                     "y": {"scale": "yscale", "signal": "tooltip.amount", "offset": -2},
+                     "text": {"signal": "tooltip.amount"},
+                     "fillOpacity": [
+                       {"test": "datum === tooltip", "value": 0},
+                       {"value": 1}
+                     ]
+                   }
+                 }
+               }
+             ]
+           }
+         };
+ 
+         const chart = new google.visualization.VegaChart(document.getElementById('chart-div'));
+         chart.draw(dataTable, options);
+       }
+    </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['時段', '機車佔有率'], 
+        ['清晨',     0.15], 
+        ['早上',      0.2], 
+        ['中午',     0.4], 
+        ['晚上',     0.1], 
+        ['半夜',    0.15]
+        ]);
+
+        var options = {
+          title: '平均機車停車佔有率',
+          is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+    </script>
+</head>
+<body>
+  <img src = "./機車動圖.gif" style="height:100px; position: relative; left:500px;top:15px"/>
+  <a href="index.html">
+    <img src="上一頁.png" alt="上一頁" style="height:50px; position: relative; top:-40px; left:-100px;"/>
+  </a>
+  <div id="piechart_3d" style="width: 800px; height: 400px; position: relative; left:50px; top: 180px;"></div>
+  <div id="chart-div" style="width: 700px; height: 350px; position: absolute; right: 0;bottom: 0;"></div>
+  <div class="loader"></div>
+  <h2 style="color: white;text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;position:relative; left:550px; top:-350px">請選擇地停：</h2>
+  <select style="font-size: 20px;font-display:unset; width:170px; height:40px;position:relative; left:710px; top:-402px">
+    <option style="font-size: 17px;">光復地停</option>
+    <option style="font-size: 17px;">成功地停</option>
+    <option style="font-size: 17px;">管院地停</option>
+    <option style="font-size: 17px;">雲平地停</option>
+</select>
+</body>
+</html>
